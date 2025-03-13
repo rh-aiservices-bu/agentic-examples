@@ -9,9 +9,9 @@ def check_api_status():
     """Check if the backend API is up and running."""
     try:
         response = requests.get(f"{BACKEND_URL}/health")
-        return "🟢 API Status: Ready" if response.status_code == 200 else "🔴 API Status: Down"
+        return "API Status: Ready 🟢" if response.status_code == 200 else "API Status: Down 🔴"
     except Exception:
-        return "🔴 API Status: Unreachable"
+        return "API Status: Unreachable 🔴"
 
 def get_enabled_tools():
     """Fetch the list of enabled tools from the backend."""
@@ -44,14 +44,14 @@ with st.sidebar:
     st.subheader(api_status)
 
     # Model in Use
-    st.subheader("📌 Model in Use")
-    st.write(f"**{get_model_name()}**")
+    st.subheader("Model in Use:")
+    st.write(f"📌 **{get_model_name()}**")
 
     # Enabled Tools
-    st.subheader("🔧 Enabled Tools")
+    st.subheader("Enabled Tools:")
     tools = get_enabled_tools()
     for tool in tools:
-        st.write(f"✅ {tool}")
+        st.write(f"🔧 {tool}")
 
     # Logs
     with st.expander("📜 Execution Logs", expanded=False):
@@ -69,7 +69,7 @@ if st.button("Ask"):
     if user_query.strip():
         with st.spinner("Processing..."):
             response = requests.post(f"{BACKEND_URL}/ask", json={"query": user_query}).json()
-            
+
             # ✅ Store logs dynamically
             st.session_state["logs"] = response.get("logs", [])
 
